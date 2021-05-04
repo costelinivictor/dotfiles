@@ -120,7 +120,6 @@ set clipboard=unnamedplus
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_theme='codedark'
-let g:airline#extensions#tabline#enabled = 0
 
 " ---------------------------------- Blamer -----------------------------------
 let g:blamer_enabled = 1
