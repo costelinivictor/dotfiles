@@ -1,33 +1,34 @@
+" ---------------------------------- Plugins -----------------------------------
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'editorconfig/editorconfig-vim'
-Plug 'codota/tabnine-vim'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'ap/vim-css-color'
-Plug 'sbdchd/neoformat'
-Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-fugitive'
-Plug 'stsewd/fzf-checkout.vim'
-Plug 'tpope/vim-surround'
-Plug 'APZelos/blamer.nvim'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'tomasiser/vim-code-dark'
-Plug 'dense-analysis/ale'
-Plug 'morhetz/gruvbox'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'Yggdroot/indentLine'
-Plug 'preservim/nerdcommenter'
-Plug 'jiangmiao/auto-pairs'
-Plug 'honza/vim-snippets'
-Plug 'ncm2/ncm2'
-Plug 'alvan/vim-closetag'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+    Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+    Plug 'editorconfig/editorconfig-vim'
+    Plug 'terryma/vim-multiple-cursors'
+    Plug 'ap/vim-css-color'
+    Plug 'tomasiser/vim-code-dark'
+    Plug 'sainnhe/sonokai'
+    Plug 'sbdchd/neoformat'
+    Plug 'sheerun/vim-polyglot'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'tpope/vim-fugitive'
+    Plug 'stsewd/fzf-checkout.vim'
+    Plug 'tpope/vim-surround'
+    Plug 'APZelos/blamer.nvim'
+    Plug 'nathanaelkane/vim-indent-guides'
+    Plug 'dense-analysis/ale'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'Yggdroot/indentLine'
+    Plug 'preservim/nerdcommenter'
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'honza/vim-snippets'
+    Plug 'ncm2/ncm2'
+    Plug 'alvan/vim-closetag'
 call plug#end()
 
-"keymaps
+" ---------------------------------- Key maps -----------------------------------
 let mapleader="\<space>"
 nnoremap <leader>; A;<esc>
 nnoremap <leader>ft :NERDTreeToggle<CR>
@@ -39,8 +40,8 @@ nnoremap <leader>j <C-W>j
 nnoremap <leader>k <C-W>k
 nnoremap <leader>l <C-W>l
 nnoremap <leader>h <C-W>h
+nnoremap <leader><S-Tab> :bprev<CR>
 nnoremap <leader><Tab> :bnext<CR>
-verbose imap <tab>
 nnoremap <A-j> :m .+1<CR>==
 nnoremap <A-k> :m .-2<CR>==
 inoremap <A-j> <Esc>:m .+1<CR>==gi
@@ -56,15 +57,46 @@ nmap <leader>nh :noh<CR>
 nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>rl :set rnu!<CR>
 
-" resize current buffer by +/- 5 
-nnoremap <A-h> :vertical resize -5<cr>
-nnoremap <A-j> :resize +5<cr>
-nnoremap <A-k> :resize -5<cr>
-nnoremap <A-l> :vertical resize +5<cr>
+"Use tab to cycle through suggestions
+verbose imap <tab>
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
 
-"colorscheme
-let g:gruvbox_contrast_dark="soft"
-colorscheme gruvbox 
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+" Resize buffer
+nnoremap <C-h> :vertical resize -5<cr>
+nnoremap <C-j> :resize +5<cr>
+nnoremap <C-k> :resize -5<cr>
+nnoremap <C-l> :vertical resize +5<cr>
+
+" ---------------------------------- Color scheme -----------------------------------
+
+if has('termguicolors')
+  set termguicolors
+endif
+
+set t_Co=256
+colorscheme codedark 
+
+" ---------------------------------- Settings -----------------------------------
 
 syntax on
 set hidden
@@ -84,24 +116,19 @@ set cursorline
 set encoding=UTF-8
 set clipboard=unnamedplus
 
-" Airline
+" ---------------------------------- Airline -----------------------------------
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='gruvbox'
+let g:airline_theme='codedark'
+let g:airline#extensions#tabline#enabled = 0
 
-" Blamer
+" ---------------------------------- Blamer -----------------------------------
 let g:blamer_enabled = 1
 let g:blamer_delay = 1000
 let g:blamer_show_in_visual_modes = 0
 highlight Blamer guifg=darkgrey
 
-" Close nerdtree if it's the only window:
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" close-tag configs
-let g:closetag_filenames = '*.html,*.ctp,*.js'
-
-" Ale configs
+" ---------------------------------- Ale -----------------------------------
 let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
 
@@ -112,17 +139,13 @@ let g:ale_fixers = {
 \   'html': ['prettier']
 \}
 
-" use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
+" ---------------------------------- Other -----------------------------------
 
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
+" Close nerdtree if it's the only window:
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" close-tag configs
+let g:closetag_filenames = '*.html,*.ctp,*.js'
+
+au BufReadPost,BufNewFile *.*, :NERDTreeFind
+
