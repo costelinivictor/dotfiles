@@ -147,5 +147,3 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " close-tag configs
 let g:closetag_filenames = '*.html,*.ctp,*.js'
 
-au BufReadPost,BufNewFile *.*, :NERDTreeFind
-
