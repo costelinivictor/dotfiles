@@ -57,6 +57,8 @@ nmap <leader>nb :tabnew<CR>
 nmap <leader>nh :noh<CR>
 nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>rl :set rnu!<CR>
+nnoremap <C-j> <C-e>
+nnoremap <C-k> <C-y>
 
 "Use tab to cycle through suggestions
 verbose imap <tab>
@@ -81,12 +83,6 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
-
-" Resize buffer
-nnoremap <C-h> :vertical resize -5<cr>
-nnoremap <C-j> :resize +5<cr>
-nnoremap <C-k> :resize -5<cr>
-nnoremap <C-l> :vertical resize +5<cr>
 
 " Document this
 nmap <Leader>dt :call PhpDocPasteComment()<CR>
