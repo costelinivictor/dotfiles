@@ -25,15 +25,45 @@
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
 snippet lg
-	console.log($1);
+console.log($1);
 endsnippet
 
 snippet rf
-	return false;
+return false;
 endsnippet
 
 snippet eri
-	$1.parentNode.removeChild($1);
+$1.parentNode.removeChild($1);
 endsnippet
 
+snippet iajax
+import { ajax } from '/mjs/lib/network.js';
+endsnippet
 
+snippet idom
+import { Dom } from '/mjs/lib/dom.js';
+endsnippet
+
+snippet ipaginator
+import { Paginator } from '/mjs/lib/ext/paginator.js';
+endsnippet
+
+snippet ivalidator
+import Validator from '/mjs/lib/ext/validator.js';
+endsnippet
+
+snippet imodal
+import { Modal } from '/mjs/lib/modal.js';
+endsnippet
+
+snippet ajax
+ajax(`${1}`, {\n\tmethod: '${2}',\n\tdata: { ${4} }\n});
+endsnippet
+
+snippet modal
+Modal.open(modal => {\n\tmodal\n\t\t.title('${1}')\n\t\t.body(${2});\n});
+endsnippet
+
+snippet dom
+Dom.element('${1}', {\n\tclassName: '${2}',\n\tinnerHTML: '${3}'\n});
+endsnippet
