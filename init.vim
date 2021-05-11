@@ -2,6 +2,7 @@
 call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'ntpeters/vim-better-whitespace'
     Plug 'junegunn/fzf.vim'
     Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
     Plug 'terryma/vim-multiple-cursors'
@@ -132,14 +133,14 @@ highlight Blamer guifg=darkgrey
 
 " ---------------------------------- Ale -----------------------------------
 "let g:ale_fix_on_save = 1
-"let g:ale_linters_explicit = 1
+let g:ale_linters_explicit = 1
 
-"let g:ale_fixers = {
-"\   'javascript': ['prettier'],
-"\   'css': ['prettier'],
-"\   'php': ['prettier'],
-"\   'html': ['prettier']
-"\}
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\   'php': ['prettier'],
+\   'html': ['prettier']
+\}
 
 " ---------------------------------- Other -----------------------------------
 
@@ -148,11 +149,3 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " close-tag configs
 let g:closetag_filenames = '*.html,*.ctp,*.js'
-
-" Highlight trailing spaces
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
