@@ -4,10 +4,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-    Plug 'editorconfig/editorconfig-vim'
     Plug 'terryma/vim-multiple-cursors'
     Plug 'ap/vim-css-color'
     Plug 'tomasiser/vim-code-dark'
+    Plug 'mralejandro/vim-phpdoc'
     Plug 'sainnhe/sonokai'
     Plug 'sbdchd/neoformat'
     Plug 'sheerun/vim-polyglot'
@@ -87,6 +87,9 @@ nnoremap <C-j> :resize +5<cr>
 nnoremap <C-k> :resize -5<cr>
 nnoremap <C-l> :vertical resize +5<cr>
 
+" Document this
+nmap <Leader>dt :call PhpDocPasteComment()<CR>
+
 " ---------------------------------- Color scheme -----------------------------------
 
 if has('termguicolors')
@@ -128,15 +131,15 @@ let g:blamer_show_in_visual_modes = 0
 highlight Blamer guifg=darkgrey
 
 " ---------------------------------- Ale -----------------------------------
-let g:ale_fix_on_save = 1
-let g:ale_linters_explicit = 1
+"let g:ale_fix_on_save = 1
+"let g:ale_linters_explicit = 1
 
-let g:ale_fixers = {
-\   'javascript': ['prettier'],
-\   'css': ['prettier'],
-\   'php': ['prettier'],
-\   'html': ['prettier']
-\}
+"let g:ale_fixers = {
+"\   'javascript': ['prettier'],
+"\   'css': ['prettier'],
+"\   'php': ['prettier'],
+"\   'html': ['prettier']
+"\}
 
 " ---------------------------------- Other -----------------------------------
 
@@ -146,3 +149,10 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " close-tag configs
 let g:closetag_filenames = '*.html,*.ctp,*.js'
 
+" Highlight trailing spaces
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
