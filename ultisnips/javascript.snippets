@@ -1,29 +1,3 @@
-# A valid snippet should starts with:
-#
-#		snippet trigger_word [ "description" [ options ] ]
-#
-# and end with:
-#
-#		endsnippet
-#
-# Snippet options:
-#
-#		b - Beginning of line.
-#		i - In-word expansion.
-#		w - Word boundary.
-#		r - Regular expression
-#		e - Custom context snippet
-#		A - Snippet will be triggered automatically, when condition matches.
-#
-# Basic example:
-#
-#		snippet emitter "emitter properties" b
-#		private readonly ${1} = new Emitter<$2>()
-#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
-#		endsnippet
-#
-# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
-
 snippet lg
 console.log($1);
 endsnippet
@@ -57,13 +31,23 @@ import { Modal } from '/mjs/lib/modal.js';
 endsnippet
 
 snippet ajax
-ajax(`${1}`, {\n\tmethod: '${2}',\n\tdata: { ${4} }\n});
+ajax(`${1}`, {
+	method: '${2}',
+	data: { ${4} }
+});
 endsnippet
 
 snippet modal
-Modal.open(modal => {\n\tmodal\n\t\t.title('${1}')\n\t\t.body(${2});\n});
+Modal.open(modal => {
+	modal
+		.title('${1}')
+		.body(${2});
+});
 endsnippet
 
 snippet dom
-Dom.element('${1}', {\n\tclassName: '${2}',\n\tinnerHTML: '${3}'\n});
+Dom.element('${1}', {
+	className: '${2}',
+	innerHTML: '${3}'
+});
 endsnippet
