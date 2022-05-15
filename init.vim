@@ -7,9 +7,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
     Plug 'terryma/vim-multiple-cursors'
     Plug 'ap/vim-css-color'
-    Plug 'tomasiser/vim-code-dark'
     Plug 'mralejandro/vim-phpdoc'
-    Plug 'sainnhe/sonokai'
     Plug 'sbdchd/neoformat'
     Plug 'sheerun/vim-polyglot'
     Plug 'airblade/vim-gitgutter'
@@ -17,6 +15,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'stsewd/fzf-checkout.vim'
     Plug 'tpope/vim-surround'
     Plug 'APZelos/blamer.nvim'
+    Plug 'navarasu/onedark.nvim'
     Plug 'nathanaelkane/vim-indent-guides'
     Plug 'dense-analysis/ale'
     Plug 'vim-airline/vim-airline'
@@ -27,6 +26,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'honza/vim-snippets'
     Plug 'ncm2/ncm2'
     Plug 'alvan/vim-closetag'
+    Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 call plug#end()
 
 " ---------------------------------- Key maps -----------------------------------
@@ -35,7 +35,8 @@ nnoremap <leader>; A;<esc>
 nnoremap <leader>ft :NERDTreeToggle<CR>
 nnoremap <leader>ec :vsplit ~/.config/nvim/init.vim<CR>
 nnoremap <leader>sc :source ~/.config/nvim/init.vim<CR>
-nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
+"nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
+nnoremap <C-p> :FzfPreviewGitFilesRpc<CR>
 nnoremap <C-f> :Ag<space>
 nnoremap <leader>j <C-W>j
 nnoremap <leader>k <C-W>k
@@ -59,6 +60,7 @@ nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>rl :set rnu!<CR>
 nnoremap <C-j> <C-e>
 nnoremap <C-k> <C-y>
+imap kj <Esc>
 
 "Use tab to cycle through suggestions
 verbose imap <tab>
@@ -86,7 +88,6 @@ endfunction
 
 " Document this
 nmap <Leader>dt :call PhpDocPasteComment()<CR>
-
 " ---------------------------------- Color scheme -----------------------------------
 
 if has('termguicolors')
@@ -94,7 +95,10 @@ if has('termguicolors')
 endif
 
 set t_Co=256
-colorscheme codedark 
+let g:onedark_config = {
+    \ 'style': 'darker',
+\}
+colorscheme onedark 
 
 " ---------------------------------- Settings -----------------------------------
 
@@ -119,7 +123,7 @@ set clipboard=unnamedplus
 " ---------------------------------- Airline -----------------------------------
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='codedark'
+let g:airline_theme='onedark'
 
 " ---------------------------------- Blamer -----------------------------------
 let g:blamer_enabled = 1
