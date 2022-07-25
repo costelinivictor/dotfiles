@@ -1,4 +1,4 @@
-" ---------------------------------- Plugins -----------------------------------
+" ---------------------------------- Plugins -----------------------------------;
 call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -24,19 +24,27 @@ call plug#begin('~/.vim/plugged')
     Plug 'preservim/nerdcommenter'
     Plug 'jiangmiao/auto-pairs'
     Plug 'honza/vim-snippets'
+    Plug 'ryanoasis/vim-devicons'
     Plug 'ncm2/ncm2'
     Plug 'alvan/vim-closetag'
+    Plug 'tomasiser/vim-code-dark'
     Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
+    Plug 'morhetz/gruvbox'
+    Plug 'github/copilot.vim'
+    Plug 'pantharshit00/vim-prisma'
+    Plug 'prettier/vim-prettier', {
+      \ 'do': 'yarn install --frozen-lockfile --production',
+      \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 call plug#end()
 
 " ---------------------------------- Key maps -----------------------------------
 let mapleader="\<space>"
+nmap <leader>q :bd<CR>
 nnoremap <leader>; A;<esc>
 nnoremap <leader>ft :NERDTreeToggle<CR>
 nnoremap <leader>ec :vsplit ~/.config/nvim/init.vim<CR>
 nnoremap <leader>sc :source ~/.config/nvim/init.vim<CR>
-"nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
-nnoremap <C-p> :FzfPreviewGitFilesRpc<CR>
+nnoremap <C-p> :FzfPreviewProjectFilesRpc<CR>
 nnoremap <C-f> :Ag<space>
 nnoremap <leader>j <C-W>j
 nnoremap <leader>k <C-W>k
@@ -53,6 +61,7 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 nmap <leader>gs :G<CR>
 nmap <leader>gc :Git commit<CR>
 nmap <leader>gp :Git push<CR>
+nmap <leader>ds :Gdiffsplit<CR>
 nmap <leader>kb :bd!<CR>
 nmap <leader>nb :tabnew<CR>
 nmap <leader>nh :noh<CR>
@@ -60,6 +69,7 @@ nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>rl :set rnu!<CR>
 nnoremap <C-j> <C-e>
 nnoremap <C-k> <C-y>
+nnoremap <silent><nowait> <space>p :call CocAction('jumpDefinition', v:false)<CR>
 imap kj <Esc>
 
 "Use tab to cycle through suggestions
@@ -98,7 +108,8 @@ set t_Co=256
 let g:onedark_config = {
     \ 'style': 'darker',
 \}
-colorscheme onedark 
+
+colorscheme onedark
 
 " ---------------------------------- Settings -----------------------------------
 
@@ -108,8 +119,8 @@ set autoindent
 set termguicolors
 set mouse=a
 set inccommand=split
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 set noswapfile
 set nowrap
@@ -132,20 +143,52 @@ let g:blamer_show_in_visual_modes = 0
 highlight Blamer guifg=darkgrey
 
 " ---------------------------------- Ale -----------------------------------
-"let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
 
 let g:ale_fixers = {
+\   'ts': ['prettier'],
 \   'javascript': ['prettier'],
 \   'css': ['prettier'],
 \   'php': ['prettier'],
 \   'html': ['prettier']
 \}
 
-" ---------------------------------- Other -----------------------------------
+" ---------------------------------- NerdTree -----------------------------------
 
-" Close nerdtree if it's the only window:
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" ---------------------------------- Other -----------------------------------
 
 " close-tag configs
 let g:closetag_filenames = '*.html,*.ctp,*.js'
+
+" Make <tab> used for trigger completion, completion confirm, snippet expand and jump like VSCode.
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+"Transparent bg
+"hi Normal ctermbg=none guibg=none
+
+" Ruler
+set colorcolumn=80
+
+" Call Prettier on save
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
